@@ -17,7 +17,7 @@ documentation:
   discord:      ""      # Your discord handle
   title:        "LEDChaser from LiteX test"      # Project title
   description:  "This is just a small demo of synthezing verilog from LiteX, this does not include any CPU."      # Short description of what your project does
-  how_it_works: ""      # Longer description of how the project works
+  how_it_works: "Long description here..."      # Longer description of how the project works
   how_to_test:  "Add LEDs on the outputs in a straight line"      # Instructions on how someone could test your project, include things like what buttons do what and how to set the clock if needed
   external_hw:  ""      # Describe any external hardware needed
   language:     "LiteX/Migen/Verilog" # other examples include Verilog, Amaranth, VHDL, etc
