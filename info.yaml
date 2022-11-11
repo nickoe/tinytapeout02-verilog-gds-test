@@ -25,8 +25,8 @@ documentation:
   clock_hz:     0       # Clock frequency in Hz (if required)
   picture:      ""      # relative path to a picture in your repository
   inputs:               # a description of what the inputs do
-    - clock
-    - reset
+    - sys_clk
+    - sys_rst
     - none
     - none
     - none
@@ -41,5 +41,5 @@ documentation:
     - segment e
     - segment f
     - segment g
-    - none
+    - segment h
 
