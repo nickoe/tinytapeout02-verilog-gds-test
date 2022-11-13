@@ -10,11 +10,18 @@ from litex.soc.integration.builder import *
 from migen import *
 
 _io = [
+    ("io_in", 0, Pins(8)),
+    ("io_out", 0, Pins(8)),
+]
+
+
+_io_sim = [
     ("sys_clk", 0, Pins(1)),
     ("sys_rst", 0, Pins(1)),
     ("io_in", 0, Pins(8)),
     ("io_out", 0, Pins(8)),
 ]
+
 
 class MyPlatform(GenericPlatform):
     def __init__(self):
@@ -22,11 +29,11 @@ class MyPlatform(GenericPlatform):
 
 class TinyTapeoutPlatform(SimPlatform):
     def __init__(self):
-        SimPlatform.__init__(self, device="SIM", io=_io, name="sim")
+        SimPlatform.__init__(self, device="SIM", io=_io_sim, name="sim")
 
 
 class MyModule(Module):
-    def __init__(self, platform, sys_clk_freq):
+    def __init__(self, platform, sys_clk_freq, simhack=False):
         print("NICK DEBUG MyModule")
         io_in = platform.request_all("io_in")
 
@@ -37,8 +44,10 @@ class MyModule(Module):
         self.csr_regions  = {}
 
         # CRG --------------------------------------------------------------------------------------
-        #self.submodules.crg = CRG(clk=platform.request("sys_clk"), rst=platform.request("sys_rst"))
-        self.submodules.crg = CRG(clk=io_in[0], rst=io_in[1])
+        if simhack:
+            self.submodules.crg = CRG(clk=platform.request("sys_clk"), rst=platform.request("sys_rst"))
+        else:
+            self.submodules.crg = CRG(clk=io_in[0], rst=io_in[1])
 
 
         # Leds -------------------------------------------------------------------------------------
@@ -47,7 +56,9 @@ class MyModule(Module):
             sys_clk_freq = sys_clk_freq)
         self.submodules.leds = ledchaser
         # control of brightness...
+        # TODO make inputs control brightness with this pwm signal
         ledchaser.add_pwm(default_width=900)
+
         #self.add_csr("leds")
 
         #self.comb += ledchaser.mode.eq(1)
@@ -70,16 +81,16 @@ def main():
     # Verilog for tapeout ----------------------------------------------------------------------
     non_sim_platform = MyPlatform()
     non_sim_platform.name = "user_module_nickoe"
-    my_mod = MyModule(non_sim_platform, sys_clk_freq)
+    my_mod = MyModule(non_sim_platform, sys_clk_freq, simhack=False)
     v_output = non_sim_platform.get_verilog(fragment=my_mod, name=non_sim_platform.name)
     v_output.write(f"src/{non_sim_platform.name}.v")
-    exit(0)
 
     # Simulation platform ----------------------------------------------------------------------
     platform = TinyTapeoutPlatform()
-    sim = MyModule(platform, sys_clk_freq)
+    sim = MyModule(platform, sys_clk_freq, simhack=True)
     sim_config = SimConfig()
     sim_config.add_clocker("sys_clk", freq_hz=sys_clk_freq)
+    #sim_config.add_clocker("io_in0[0]", freq_hz=sys_clk_freq)
     platform.build(sim, sim_config=sim_config, interactive=True, build_dir="./litex_out", run=True,
                    trace=True,
                    trace_fst=True,
