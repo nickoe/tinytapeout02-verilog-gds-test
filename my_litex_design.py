@@ -28,6 +28,7 @@ class TinyTapeoutPlatform(SimPlatform):
 class MyModule(Module):
     def __init__(self, platform, sys_clk_freq):
         print("NICK DEBUG MyModule")
+        io_in = platform.request_all("io_in")
 
         # SoC attributes ---------------------------------------------------------------------------
         self.platform     = platform
@@ -36,7 +37,9 @@ class MyModule(Module):
         self.csr_regions  = {}
 
         # CRG --------------------------------------------------------------------------------------
-        self.submodules.crg = CRG(clk=platform.request("sys_clk"), rst=platform.request("sys_rst"))
+        #self.submodules.crg = CRG(clk=platform.request("sys_clk"), rst=platform.request("sys_rst"))
+        self.submodules.crg = CRG(clk=io_in[0], rst=io_in[1])
+
 
         # Leds -------------------------------------------------------------------------------------
         ledchaser = LedChaser(
@@ -51,7 +54,6 @@ class MyModule(Module):
 
         #platform.request("io_out", 0),
 
-        platform.request_all("io_in")
 
         # new matching in newer litex?
         #platform.request_remaining("io_in")
