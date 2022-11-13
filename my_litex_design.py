@@ -84,6 +84,7 @@ def main():
     my_mod = MyModule(non_sim_platform, sys_clk_freq, simhack=False)
     v_output = non_sim_platform.get_verilog(fragment=my_mod, name=non_sim_platform.name)
     v_output.write(f"src/{non_sim_platform.name}.v")
+    #exit(0)
 
     # Simulation platform ----------------------------------------------------------------------
     platform = TinyTapeoutPlatform()
@@ -100,4 +101,5 @@ def main():
 
 
 if __name__ == "__main__":
+    # Run with args --trace-fst --trace --trace-end 10000000000000
     main()
