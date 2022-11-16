@@ -76,7 +76,7 @@ class MyModule(Module):
 
 
 def main():
-    sys_clk_freq = int(1e6)
+    sys_clk_freq = int(10e3)
 
     # Verilog for tapeout ----------------------------------------------------------------------
     non_sim_platform = MyPlatform()

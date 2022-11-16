@@ -26,13 +26,17 @@ async def test_user_module_nickoe(dut):
     dut.rst.value = 0
     dut._log.info("reset released")
     i = 0
-    while i < len(led_states)-1:
+    while i < len(led_states):
         await ClockCycles(dut.clk, 1)
-        if int(dut.leds.value) == led_states[i+1]:
+        next_idx = (i+1)%len(led_states)
+        if int(dut.leds.value) == led_states[next_idx]:
             i = i + 1
-            dut._log.info(f"transition hit! led_state={led_states[i]} {int(dut.leds.value)} :)")
+            dut._log.info(f"transition hit! led_state={led_states[next_idx]} {int(dut.leds.value)} :)")
             continue
         assert int(dut.leds.value) == led_states[i]
+
+    dut._log.info("clocking form some extra cycles")
+    await ClockCycles(dut.clk, 100)
 
     dut._log.info("sim done")
 
