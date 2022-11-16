@@ -6,7 +6,7 @@ from cocotb.triggers import RisingEdge, FallingEdge, Timer, ClockCycles
 # probably exist a better way to do this...
 num_leds = 8
 led_states = []
-for i in range(num_leds):
+for i in range(num_leds+1):
     led_states.append(2**i-1)
 for i in reversed(led_states):
     led_states.append(i)
@@ -26,13 +26,15 @@ async def test_user_module_nickoe(dut):
     await ClockCycles(dut.clk, 10)
     dut.rst.value = 0
     dut._log.info("reset released")
-    for i in range(len(led_states)):
-        dut._log.info(f"iteration {i}")
-        dut._log.info("clocking for a bit")
-        await ClockCycles(dut.clk, 10000)
-        dut._log.info(f"waiting for led_state={led_states[i]:>08b} {int(dut.leds.value)}")
+    i = 0
+    while i < len(led_states)-1:
+        await ClockCycles(dut.clk, 1000)
+        dut._log.info(f"waiting for led_state={led_states[i]} {int(dut.leds.value)}")
+        if int(dut.leds.value) == led_states[i+1]:
+            i = i + 1
+            dut._log.info(f"transition hit! :)")
+            continue
         assert int(dut.leds.value) == led_states[i]
-        i = i - 1
 
     dut._log.info("sim done")
 

@@ -57,7 +57,7 @@ class MyModule(Module):
         self.submodules.leds = ledchaser
         # control of brightness...
         # TODO make inputs control brightness with this pwm signal
-        ledchaser.add_pwm(default_width=900)
+        #ledchaser.add_pwm(default_width=900)
 
         #self.add_csr("leds")
 
@@ -84,7 +84,7 @@ def main():
     my_mod = MyModule(non_sim_platform, sys_clk_freq, simhack=False)
     v_output = non_sim_platform.get_verilog(fragment=my_mod, name=non_sim_platform.name)
     v_output.write(f"src/{non_sim_platform.name}.v")
-    #exit(0)
+    exit(0)
 
     # Simulation platform ----------------------------------------------------------------------
     platform = TinyTapeoutPlatform()
