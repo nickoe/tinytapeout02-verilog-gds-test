@@ -1,3 +1,8 @@
+all: update test
+
+test:
+	make -C src
+
 update:
 	#./my_litex_design.py
 	docker run --rm -e LOCAL_USER_ID=`id -u ${USER}` -e LOCAL_GROUP_ID=`id -g ${USER}` -v `pwd`:/work -it nickoe-litex bash -l -c "./my_litex_design.py"
