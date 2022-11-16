@@ -2,24 +2,23 @@ import cocotb
 from cocotb.clock import Clock
 from cocotb.triggers import RisingEdge, FallingEdge, Timer, ClockCycles
 
-# Generating the sequence of LED states for the "train"... there
-# probably exist a better way to do this...
+# Generating the sequence of LED states for the "train"...
 num_leds = 8
 led_states = []
 for i in range(num_leds+1):
     led_states.append(2**i-1)
-for i in reversed(led_states):
-    led_states.append(i)
-led_states.pop(num_leds)
-led_states.pop(num_leds*2-2)
-
+for i in range(1,len(led_states)-1):
+    led_states.append(255 - led_states[i])
 print(led_states)
 
 @cocotb.test()
 async def test_user_module_nickoe(dut):
     dut._log.info("start")
-    clock = Clock(dut.clk, 10, units="us")
-    cocotb.fork(clock.start())
+    #clock = Clock(dut.clk, 10, units="us")
+    #cocotb.fork(clock.start())
+    clk_10khz = Clock(dut.clk, 1, units='ms')
+    cocotb.start_soon(clk_10khz.start())
+
 
     dut._log.info("reset")
     dut.rst.value = 1
