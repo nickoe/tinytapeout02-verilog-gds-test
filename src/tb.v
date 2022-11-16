@@ -26,7 +26,7 @@ module tb (
     assign leds = outputs[7:0];
 
     // instantiate the DUT
-    user_module_nickoe #(.MAX_COUNT(100)) user_module_nickoe(
+    user_module_nickoe #() user_module_nickoe(
         .io_in  (inputs),
         .io_out (outputs)
         );
