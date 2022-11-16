@@ -28,11 +28,10 @@ async def test_user_module_nickoe(dut):
     dut._log.info("reset released")
     i = 0
     while i < len(led_states)-1:
-        await ClockCycles(dut.clk, 1000)
-        dut._log.info(f"waiting for led_state={led_states[i]} {int(dut.leds.value)}")
+        await ClockCycles(dut.clk, 1)
         if int(dut.leds.value) == led_states[i+1]:
             i = i + 1
-            dut._log.info(f"transition hit! :)")
+            dut._log.info(f"transition hit! led_state={led_states[i]} {int(dut.leds.value)} :)")
             continue
         assert int(dut.leds.value) == led_states[i]
 
