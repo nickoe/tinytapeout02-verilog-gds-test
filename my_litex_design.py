@@ -66,7 +66,7 @@ class MyModule(Module):
         #platform.request("io_out", 0),
 
         # Disable / enable PWM
-        self.comb += io_in[2].eq(ledchaser.pwm.enable)
+        self.comb += ledchaser.pwm.enable.eq(io_in[2])
 
 
         # new matching in newer litex?
