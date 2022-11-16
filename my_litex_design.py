@@ -57,7 +57,7 @@ class MyModule(Module):
         self.submodules.leds = ledchaser
         # control of brightness...
         # TODO make inputs control brightness with this pwm signal
-        ledchaser.add_pwm(default_width=900, default_period=1024, with_csr=False)
+        ledchaser.add_pwm(default_width=round(0.8*2**5-1), default_period=2**5-1, with_csr=False)
 
         #self.add_csr("leds")
 
@@ -65,8 +65,9 @@ class MyModule(Module):
 
         #platform.request("io_out", 0),
 
-        # Disable / enable PWM
-        self.comb += ledchaser.pwm.enable.eq(io_in[2])
+        # TODO WARNING this will actually make the litex sim show nothing... remember to set it properly int he cocotb
+        self.sync += ledchaser.pwm.width.eq(io_in[2:])
+
 
 
         # new matching in newer litex?

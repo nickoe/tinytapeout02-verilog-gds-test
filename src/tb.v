@@ -11,7 +11,7 @@ module tb (
     input clk,
     input rst,
     output [7:0] leds,
-    input pwm_enable
+    input [5:0] pwm_width
    );
 
     // this part dumps the trace to a vcd file that can be viewed with GTKWave
@@ -22,7 +22,7 @@ module tb (
     end
 
     // wire up the inputs and outputs
-    wire [7:0] inputs = {5'b0, pwm_enable, rst, clk};
+    wire [7:0] inputs = {pwm_width, rst, clk};
     wire [7:0] outputs;
     assign leds = outputs[7:0];
 

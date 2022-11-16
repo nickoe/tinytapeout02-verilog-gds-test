@@ -17,7 +17,7 @@ documentation:
   discord:      "nickoe#3016"      # Your discord handle - make sure to include the # part as well
   title:        "LEDChaser from LiteX test"      # Project title
   description:  "This is just a small demo of synthezing verilog from LiteX, this does not include any CPU."      # Short description of what your project does
-  how_it_works: "It just implements LEDChaser from the LiteX LED core demo"      # Longer description of how the project works
+  how_it_works: "It just implements LEDChaser from the LiteX LED core demo, where io_in[3:7] is duty cycle"      # Longer description of how the project works
   how_to_test:  "Add LEDs on the outputs in a straight line -- or probe all signals on a scope and check that you get a 'moving' train of pulses."      # Instructions on how someone could test your project, include things like what buttons do what and how to set the clock if needed
   external_hw:  ""      # Describe any external hardware needed
   language:     "LiteX/Migen/Verilog" # other examples include Verilog, Amaranth, VHDL, etc
@@ -27,12 +27,12 @@ documentation:
   inputs:               # a description of what the inputs do
     - clock
     - reset
-    - none
-    - none
-    - none
-    - none
-    - none
-    - none
+    - pwm_width 0
+    - pwm_width 1
+    - pwm_width 2
+    - pwm_width 3
+    - pwm_width 4
+    - pwm_width 5
   outputs:
     - led a         # a description of what the outputs do
     - led b
