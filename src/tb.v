@@ -10,7 +10,8 @@ module tb (
     // testbench is controlled by test.py
     input clk,
     input rst,
-    output [7:0] leds
+    output [7:0] leds,
+    input pwm_enable
    );
 
     // this part dumps the trace to a vcd file that can be viewed with GTKWave
@@ -21,7 +22,7 @@ module tb (
     end
 
     // wire up the inputs and outputs
-    wire [7:0] inputs = {6'b0, rst, clk};
+    wire [7:0] inputs = {5'b0, pwm_enable, rst, clk};
     wire [7:0] outputs;
     assign leds = outputs[7:0];
 

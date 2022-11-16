@@ -57,13 +57,16 @@ class MyModule(Module):
         self.submodules.leds = ledchaser
         # control of brightness...
         # TODO make inputs control brightness with this pwm signal
-        #ledchaser.add_pwm(default_width=900)
+        ledchaser.add_pwm(default_width=900, default_period=1024, with_csr=False)
 
         #self.add_csr("leds")
 
         #self.comb += ledchaser.mode.eq(1)
 
         #platform.request("io_out", 0),
+
+        # Disable / enable PWM
+        self.comb += io_in[2].eq(ledchaser.pwm.enable)
 
 
         # new matching in newer litex?

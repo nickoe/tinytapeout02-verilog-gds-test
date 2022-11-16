@@ -23,7 +23,12 @@ async def test_user_module_nickoe(dut):
     dut._log.info("reset")
     dut.rst.value = 1
     await ClockCycles(dut.clk, 10)
+    print(f'pwm enable is {dut.pwm_enable.value}')
+    dut.pwm_enable.value = 1
+    await ClockCycles(dut.clk, 10)
     dut.rst.value = 0
+    dut.pwm_enable.value = 0
+    print(f'pwm enable is {dut.pwm_enable.value}')
     dut._log.info("reset released")
     i = 0
     while i < len(led_states):
