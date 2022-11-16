@@ -13,7 +13,7 @@ for i in reversed(led_states):
 led_states.pop(num_leds)
 led_states.pop(num_leds*2-2)
 
-
+print(led_states)
 
 @cocotb.test()
 async def test_user_module_nickoe(dut):
@@ -26,9 +26,14 @@ async def test_user_module_nickoe(dut):
     await ClockCycles(dut.clk, 10)
     dut.rst.value = 0
     dut._log.info("reset released")
-    for i in range(10):
+    for i in range(len(led_states)):
+        dut._log.info(f"iteration {i}")
         dut._log.info("clocking for a bit")
         await ClockCycles(dut.clk, 10000)
+        dut._log.info(f"waiting for led_state={led_states[i]:>08b} {int(dut.leds.value)}")
+        assert int(dut.leds.value) == led_states[i]
+        i = i - 1
+
     dut._log.info("sim done")
 
 
